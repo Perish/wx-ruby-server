@@ -5,7 +5,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user,
     }
     result = WxRubyServerSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -15,6 +15,14 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def current_user
+    if request.headers['Authorization'].present?
+      User.authenticate_by_token(request.headers['Authorization'].split(' ').last)
+    else
+      nil
+    end
+  end
 
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)

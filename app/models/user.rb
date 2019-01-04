@@ -11,6 +11,16 @@ class User < ApplicationRecord
   end
 
   def generate_token
-    "#{id}$#{SecureRandom.hex(30)}$#{SecureRandom.base64(20)}"
+    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
+    token = crypt.encrypt_and_sign("user_ident:#{self.id}")
+  end
+
+  def self.authenticate_by_token(token)
+    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials.secret_key_base.byteslice(0..31))
+    token = crypt.decrypt_and_verify(token)
+    user_id = token.gsub('user_ident:', '').to_i
+    User.find_by id: user_id
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    nil
   end
 end

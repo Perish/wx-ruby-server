@@ -33,5 +33,11 @@ module WxRubyServer
     config.api_only = true
     config.i18n.available_locales = ['zh-CN', :en]
     config.i18n.default_locale = 'zh-CN'
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'localhost:3000', 'wx-client.herokuapp.com'
+        resource '*', headers: :any, methods: [:get, :post, :options], credentials: true
+      end
+    end
   end
 end

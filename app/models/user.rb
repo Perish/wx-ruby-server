@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_one :wx_setting
+
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
 

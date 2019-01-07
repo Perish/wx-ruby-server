@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_26_011948) do
+ActiveRecord::Schema.define(version: 2019_01_07_144815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,4 +23,14 @@ ActiveRecord::Schema.define(version: 2018_12_26_011948) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "wx_settings", force: :cascade do |t|
+    t.string "app_id"
+    t.string "app_secret"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wx_settings_on_user_id"
+  end
+
+  add_foreign_key "wx_settings", "users"
 end

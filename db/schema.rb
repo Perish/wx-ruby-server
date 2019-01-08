@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2019_01_07_144815) do
     t.string "app_id"
     t.string "app_secret"
     t.bigint "user_id"
+    t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_wx_settings_on_user_id"

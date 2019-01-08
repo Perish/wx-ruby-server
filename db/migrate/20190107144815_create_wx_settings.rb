@@ -4,6 +4,7 @@ class CreateWxSettings < ActiveRecord::Migration[5.2]
       t.string :app_id
       t.string :app_secret
       t.references :user, foreign_key: true
+      t.string :token
 
       t.timestamps
     end
